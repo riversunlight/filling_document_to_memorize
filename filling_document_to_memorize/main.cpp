@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <time.h>
 using namespace std;
 
 // 問題データ
@@ -25,7 +26,7 @@ void read_file() {
 	FILE* fp;
 	errno_t err;
 	char file_name[500];
-	char buf[1000];
+	char buf[2000];
 	int que_num = 0;
 
 	cout << "ファイル名を入力してください" << endl;
@@ -37,10 +38,10 @@ void read_file() {
 		return;
 	}
 
-	while (fgets(buf, 1000, fp) != NULL) {
+	while (fgets(buf, 2000, fp) != NULL) {
 		string s;
 		s = buf;
-		if (s == "#E") {
+		if (s == "#E\n") {
 			que_num++;
 			continue;
 		}
@@ -57,11 +58,32 @@ void read_file() {
 	fclose(fp);
 }
 
+// 問題を並び替える
+void shuffle_question() {
+	vector<int> remain;
+	vector<question> temp;
+	temp = question_data;
+	for (int i = 0; i < (int)question_data.size(); i++) {
+		remain.emplace_back(i);
+	}
+
+	for (int i = 0; i < (int)question_data.size(); i++) {
+		int r = rand() % (int)remain.size();
+
+	    question_data[i] = temp[remain[r]];
+		remain.erase(remain.begin() + r);
+
+	}
+}
+
 int main() {
+	srand((unsigned int)time(NULL));
+
 	// ファイル読み込み
 	read_file();
 
 	// 並び替え
+	shuffle_question();
 
 	// 暗記フェーズ
 
