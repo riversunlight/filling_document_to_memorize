@@ -120,13 +120,15 @@ bool all_clear(vector<bool> ac) {
 void memorize_doc() {
 	for (int i = 0; i < (int)question_data.size(); ) {
 		vector<string> user_ans((int)question_data[i].ans.size());
-		fill_ac(question_data[i]); // ³“šÏ‚Ì‚Å[‚½‚ğ
+		fill_ac(question_data[i]); // ³“šÏ‚ÌŒŠ–„‚ß‚ğ–„‚ß‚é
 		cout << question_data[i].doc << endl;
 		for (int j = 0; j < (int)question_data[i].ans.size(); j++) {
 			if (question_data[i].ac[j]) continue;
 			cout << "#" << j + 1 << ">";
 			cin >> user_ans[j];
 		}
+
+		cout << endl;
 
 		for (int j = 0; j < (int)question_data[i].ans.size(); j++) {
 			if (question_data[i].ac[j]) continue;
@@ -139,6 +141,8 @@ void memorize_doc() {
 				cout << "•s³‰ğ" << " " << question_data[i].ans[j] << endl;
 			}
 		}
+
+		// ‘S–â³‰ğ‚µ‚½‚©”»’è
 		if (all_clear(question_data[i].ac)) question_data.erase(question_data.begin() + i);
 		else i++;
 
