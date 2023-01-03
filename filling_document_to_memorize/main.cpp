@@ -81,6 +81,33 @@ void shuffle_question() {
 	}
 }
 
+// 正解した穴埋めは([数字])から[正答]へ書き換える
+void fill_ac(question &que) {
+	int ps = -1; // かっこの始まりの位置
+	int hoal_number = 0;
+	for (int i = 0; i < (int)que.doc.size(); i++) {
+		if (que.doc[i] == '(') {
+			ps = i;
+		}
+		else if (ps != -1) {
+			if (que.doc[i] - '0' >= 0 && que.doc[i] - '0' <= 9) {
+				hoal_number *= 10;
+				hoal_number += que.doc[i] - '0';
+			}
+			else {
+				if (que.doc[i] == ')' && que.ac[hoal_number - 1]) {
+					int digits_num = (int)log10(hoal_number) + 1;
+					que.doc.erase(ps, digits_num + 2);
+					que.doc.insert(ps, que.ans[hoal_number - 1]);
+				}
+				ps = -1;
+				hoal_number = 0;
+			}
+		}
+		
+	}
+}
+
 // 全問正解したか
 bool all_clear(vector<bool> ac) {
 	bool res = true;
@@ -93,6 +120,7 @@ bool all_clear(vector<bool> ac) {
 void memorize_doc() {
 	for (int i = 0; i < (int)question_data.size(); ) {
 		vector<string> user_ans((int)question_data[i].ans.size());
+		fill_ac(question_data[i]); // 正答済のでーたを
 		cout << question_data[i].doc << endl;
 		for (int j = 0; j < (int)question_data[i].ans.size(); j++) {
 			if (question_data[i].ac[j]) continue;
