@@ -30,6 +30,7 @@ void read_file() {
 	char file_name[500];
 	char buf[2000];
 	int que_num = 0;
+	int fil_cnt = 0;
 
 	cout << "ƒtƒ@ƒCƒ‹–¼‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢" << endl;
 	cin >> file_name;
@@ -48,7 +49,8 @@ void read_file() {
 			continue;
 		}
 		if (s[0] == '#') {
-			s.erase(0, 2);
+			fil_cnt++;
+			s.erase(0, (int)log10(fil_cnt) + 2);
 			s.pop_back();
 			question_data[que_num].ans.push_back(s);
 			question_data[que_num].ac.push_back(false);
@@ -57,6 +59,7 @@ void read_file() {
 			question que;
 			que.doc = s;
 			question_data.push_back(que);
+			fil_cnt = 0;
 		}
 	}
 	fclose(fp);
